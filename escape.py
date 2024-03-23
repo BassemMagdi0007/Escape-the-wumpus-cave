@@ -1,5 +1,6 @@
 import os
 import shutil
+import subprocess
 
 # Function to parse the map file and extract content
 def parse_map_file(map_file):
@@ -43,6 +44,20 @@ original_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignmen
 
 # Destination directory for copied mapXYZ.pddl files
 example_pddl = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-pddl'
+
+# Directory containing wumpus.pddl file
+domain_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment'
+
+# Directory for planner output
+planner_output = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\planner-output'
+
+
+# List to store PDDL file paths
+pddl_files = []
+
+# Count of PDDL files to generate
+max_files = 10
+count = 0
 
 # Iterate over each example problem file
 for example_problem_file in os.listdir(example_map):
@@ -91,3 +106,11 @@ for example_problem_file in os.listdir(example_map):
             f.writelines(pddl_content)
         
         print(f"Content inserted successfully into {destination_map_pddl_path}")
+        
+        # Append the path of the generated PDDL file to the list
+        pddl_files.append(destination_map_pddl_path)
+        
+        # Increment the count
+        count += 1
+        if count >= max_files:
+            break
