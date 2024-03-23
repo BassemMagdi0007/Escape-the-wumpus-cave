@@ -45,12 +45,8 @@ original_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignmen
 # Destination directory for copied mapXYZ.pddl files
 example_pddl = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-pddl'
 
-# Directory containing wumpus.pddl file
-domain_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment'
-
 # Directory for planner output
 planner_output = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\planner-output'
-
 
 # List to store PDDL file paths
 pddl_files = []
@@ -114,3 +110,24 @@ for example_problem_file in os.listdir(example_map):
         count += 1
         if count >= max_files:
             break
+
+# Iterate over each generated PDDL file and solve it
+for pddl_file in pddl_files:
+    # Extract the problem number from the file name
+    problem_number = os.path.basename(pddl_file).split('.')[0]
+    
+    # Docker command to run fast-downward planner for the current PDDL file
+    docker_command = f'docker run --rm -v "{example_pddl}:/files" aibasel/downward --alias lama-first --plan-file /files/{problem_number}.sol /files/wumpus.pddl /files/{problem_number}.pddl'
+    
+    # Execute the Docker command
+    try:
+        subprocess.run(docker_command, shell=True, check=True)
+        print(f"Planner executed successfully for {problem_number}.pddl")
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing planner command for {problem_number}.pddl: {e}")
+
+    # Move the planner output to the planner output directory
+    shutil.move(os.path.join(example_pddl, f'{problem_number}.sol'), os.path.join(planner_output, f'{problem_number}.pddl.sol'))
+    print(f"Planner output stored successfully in {os.path.join(planner_output, f'{problem_number}.pddl.sol')}")
+
+print("All planner outputs stored successfully in:", planner_output)
