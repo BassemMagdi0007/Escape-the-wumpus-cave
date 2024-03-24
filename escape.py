@@ -38,13 +38,10 @@ def parse_map_file(map_file):
 
 # Directory containing example problem files
 example_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-maps'
-
 # Directory containing map.pddl file
 original_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment'
-
 # Destination directory for copied mapXYZ.pddl files
 example_pddl = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-pddl'
-
 # Directory for planner output
 planner_output = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\planner-output'
 
@@ -111,13 +108,17 @@ for example_problem_file in os.listdir(example_map):
         if count >= max_files:
             break
 
+
+# Call the Planner 
+#-----------------
+        
 # Iterate over each generated PDDL file and solve it
 for pddl_file in pddl_files:
     # Extract the problem number from the file name
     problem_number = os.path.basename(pddl_file).split('.')[0]
     
     # Docker command to run fast-downward planner for the current PDDL file
-    docker_command = f'docker run --rm -v "{example_pddl}:/files" aibasel/downward --alias lama-first --plan-file /files/{problem_number}.sol /files/wumpus.pddl /files/{problem_number}.pddl'
+    docker_command = f'docker run --rm -v "{example_pddl}:/files" aibasel/downward --alias lama-first --plan-file /files/{problem_number}.soln /files/wumpus.pddl /files/{problem_number}.pddl'
     
     # Execute the Docker command
     try:
@@ -127,7 +128,95 @@ for pddl_file in pddl_files:
         print(f"Error executing planner command for {problem_number}.pddl: {e}")
 
     # Move the planner output to the planner output directory
-    shutil.move(os.path.join(example_pddl, f'{problem_number}.sol'), os.path.join(planner_output, f'{problem_number}.pddl.sol'))
-    print(f"Planner output stored successfully in {os.path.join(planner_output, f'{problem_number}.pddl.sol')}")
+    shutil.move(os.path.join(example_pddl, f'{problem_number}.soln'), os.path.join(planner_output, f'{problem_number}.pddl.soln'))
+    print(f"Planner output stored successfully in {os.path.join(planner_output, f'{problem_number}.pddl.soln')}")
 
 print("All planner outputs stored successfully in:", planner_output)
+
+# Generate solution text files
+#-----------------------------
+ 
+# Directory for new text files
+solution_txt_directory = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-txt'
+
+# Function to map actions from the solution file
+def map_actions(solution_file):
+    mapped_actions = []
+    with open(solution_file, 'r') as f:
+        lines = f.readlines()
+    for line in lines:
+        # Extract the first word from each line
+        action = line.split()[0]
+        # Handle the 'exit_map' action
+        if action == '(exit_map':
+            # Use the previous action as it is for 'exit_map'
+            mapped_actions.append(mapped_actions[-1])
+        else:
+            # Map the action and append to the list
+            mapped_actions.append(action)
+    return mapped_actions
+
+# Iterate over each solution file and create the corresponding text file
+for solution_file in os.listdir(planner_output):
+    if solution_file.endswith('.pddl.soln'):
+        # Extract the problem number from the file name
+        problem_number = solution_file.split('.')[0]
+        # Path for the solution text file
+        solution_txt_file_path = os.path.join(solution_txt_directory, f'{problem_number}-solution.txt')
+        # Map actions from the solution file
+        mapped_actions = map_actions(os.path.join(planner_output, solution_file))
+        # Write the mapped actions to the text file
+        with open(solution_txt_file_path, 'w') as f:
+            for action in mapped_actions:
+                f.write(f"{action}\n")
+        print(f"Solution text file generated successfully for {problem_number}.pddl.soln")
+
+# Directory for solution output
+solution_output = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment\example-txt'
+
+# Mapping of actions to descriptions
+action_map = {
+    "walknorth": "walk north",
+    "walksouth": "walk south",
+    "walkwest": "walk west",
+    "walkeast": "walk east",
+    "pushnorth": "push north",
+    "pushsouth": "push south",
+    "pushwest": "push west",
+    "pusheast": "push east",
+    "shotnorth": "shoot north",
+    "shotsouth": "shoot south",
+    "shotwest": "shoot west",
+    "shoteast": "shoot east",
+    "scarewest": "scare west",
+    "scareeast": "scare east",
+    "scarenorth": "scare north",
+    "scaresouth": "scare south",
+    "pushhalfcratewest": "push half crate west",
+    "pushhalfcratenorth": "push half crate north",
+    "pushhalfcratesouth": "push half crate south",
+    "pushhalfcrateeast": "push half crate east",
+}
+# Iterate over each solution file and create the corresponding text file
+for solution_file in os.listdir(planner_output):
+    if solution_file.endswith('.pddl.soln'):
+        # Extract the problem number from the file name
+        problem_number = solution_file.split('.')[0]
+        # Path for the solution text file
+        solution_txt_file_path = os.path.join(solution_txt_directory, f'{problem_number}-solution.txt')
+        # Map actions from the solution file
+        mapped_actions = map_actions(os.path.join(planner_output, solution_file))
+        # Write the mapped actions to the text file
+        with open(solution_txt_file_path, 'w') as f:
+            for action in mapped_actions:
+                # Remove the leading '(' and the ';' at the end of the line
+                action = action.strip('();')
+                # Map the action using action_map if available, else use the original action
+                mapped_action = action_map.get(action, action)
+                # Write the mapped action to the file
+                f.write(f"{mapped_action}\n")
+        print(f"Solution text file generated successfully for {problem_number}.pddl.soln")
+
+
+
+

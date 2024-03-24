@@ -32,7 +32,7 @@
     
   ; __________________________________EXIT CELLS____________________________________________
     (exit_points cell0_0) (exit_points cell0_1) (exit_points cell0_2) (exit_points cell0_3) (exit_points cell0_4) (exit_points cell0_5) (exit_points cell0_6) (exit_points cell0_7) (exit_points cell0_8) (exit_points cell0_9) (exit_points cell0_10) (exit_points cell0_11)
-    (exit_points cell1_0) (exit_points cell2_0) (exit_points cell1_3) (exit_points cell1_4) (exit_points cell5_0) (exit_points cell6_0) (exit_points cell7_0)
+    (exit_points cell1_0) (exit_points cell2_0) (exit_points cell3_0) (exit_points cell4_0) (exit_points cell5_0) (exit_points cell6_0) (exit_points cell7_0)
     (exit_points cell1_11) (exit_points cell2_11) (exit_points cell3_11) (exit_points cell4_11) (exit_points cell5_11) (exit_points cell6_11) (exit_points cell7_11) 
     (exit_points cell7_0) (exit_points cell7_1) (exit_points cell7_2) (exit_points cell7_3) (exit_points cell7_4) (exit_points cell7_5) (exit_points cell7_6) (exit_points cell7_7) (exit_points cell7_8) (exit_points cell7_9) (exit_points cell7_10) (exit_points cell7_11) 
 
