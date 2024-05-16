@@ -30,6 +30,20 @@
   ; _________________________________MAP CONTENT___________________________________________
 
     
+  ; _________________________________Inside CELLS____________________________________________
+    ; (insideCave cell0_0) (insideCave cell0_1) (insideCave cell0_2) (insideCave cell0_3) (insideCave cell0_4) (insideCave cell0_5) (insideCave cell0_6) (insideCave cell0_7)
+    ; (insideCave cell1_0) (insideCave cell1_1) (insideCave cell1_2) (insideCave cell1_3) (insideCave cell1_4) (insideCave cell1_5) (insideCave cell1_6) (insideCave cell1_7)
+    ; (insideCave cell2_0) (insideCave cell2_1) (insideCave cell2_2) (insideCave cell2_3) (insideCave cell2_4) (insideCave cell2_5) (insideCave cell2_6) (insideCave cell2_7)
+    ; (insideCave cell3_0) (insideCave cell3_1) (insideCave cell3_2) (insideCave cell3_3) (insideCave cell3_4) (insideCave cell3_5) (insideCave cell3_6) (insideCave cell3_7)
+    ; (insideCave cell4_0) (insideCave cell4_1) (insideCave cell4_2) (insideCave cell4_3) (insideCave cell4_4) (insideCave cell4_5) (insideCave cell4_6) (insideCave cell4_7)
+    ; (insideCave cell5_0) (insideCave cell5_1) (insideCave cell5_2) (insideCave cell5_3) (insideCave cell5_4) (insideCave cell5_5) (insideCave cell5_6) (insideCave cell5_7)
+    ; (insideCave cell6_0) (insideCave cell6_1) (insideCave cell6_2) (insideCave cell6_3) (insideCave cell6_4) (insideCave cell6_5) (insideCave cell6_6) (insideCave cell6_7)
+    ; (insideCave cell7_0) (insideCave cell7_1) (insideCave cell7_2) (insideCave cell7_3) (insideCave cell7_4) (insideCave cell7_5) (insideCave cell7_6) (insideCave cell7_7)
+    ; (insideCave cell8_0) (insideCave cell8_1) (insideCave cell8_2) (insideCave cell8_3) (insideCave cell8_4) (insideCave cell8_5) (insideCave cell8_6) (insideCave cell8_7)
+    ; (insideCave cell9_0) (insideCave cell9_1) (insideCave cell9_2) (insideCave cell9_3) (insideCave cell9_4) (insideCave cell9_5) (insideCave cell9_6) (insideCave cell9_7)
+    ; (insideCave cell10_0) (insideCave cell10_1) (insideCave cell10_2) (insideCave cell10_3) (insideCave cell10_4) (insideCave cell10_5) (insideCave cell10_6) (insideCave cell10_7)
+    ; (insideCave cell11_0) (insideCave cell11_1) (insideCave cell11_2) (insideCave cell11_3) (insideCave cell11_4) (insideCave cell11_5) (insideCave cell11_6) (insideCave cell11_7)
+
   ; __________________________________EXIT CELLS____________________________________________
     (exit_points cell0_0) (exit_points cell0_1) (exit_points cell0_2) (exit_points cell0_3) (exit_points cell0_4) (exit_points cell0_5) (exit_points cell0_6) (exit_points cell0_7) (exit_points cell0_8) (exit_points cell0_9) (exit_points cell0_10) (exit_points cell0_11)
     (exit_points cell1_0) (exit_points cell2_0) (exit_points cell3_0) (exit_points cell4_0) (exit_points cell5_0) (exit_points cell6_0) (exit_points cell7_0)
