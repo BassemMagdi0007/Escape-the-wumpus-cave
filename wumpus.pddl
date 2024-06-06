@@ -464,287 +464,259 @@
         )
     )
     
-; ;   ; ; ___________________________Pick Arrow______________________________________ 
-; ;   ; (:action pickArrow
-; ;   ;   :parameters (?s - agent ?a - arrow ?l1 - location)
-; ;   ;   :precondition (and 
-; ;   ;     (at ?s ?l1)
-; ;   ;     (at ?a ?l1)
-; ;   ;   )
-; ;   ;   :effect (and 
-; ;   ;     (hasArrows ?s ?a)
-; ;   ;     (not (at ?a ?l1))
-; ;   ;   )
-; ;   ; )
+  ; _____________________________Shoot_________________________________________ 
+  ;; ((((((((((((((    EAST    ))))))))))))))
+  (:action shootEast
+    :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
+    :precondition (and 
+      (at ?s ?l1)
+      (at ?w ?l2)
+      (hasArrows ?s ?a)
+      (adjacent_east ?l1 ?l2)
+    )
+    :effect (and 
+      (not (at ?w ?l2))
+      (empty ?l2)
+      (not (hasArrows ?s ?a))
+    )
+  )  
 
-;   ; _____________________________Shoot_________________________________________ 
-;   ;; ((((((((((((((    EAST    ))))))))))))))
-;   (:action shootEast
-;     :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
-;     :precondition (and 
-;       (at ?s ?l1)
-;       (at ?w ?l2)
-;       (hasArrows ?s ?a)
-;       (adjacent_east ?l1 ?l2)
-;     )
-;     :effect (and 
-;       (not (at ?w ?l2))
-;       (empty ?l2)
-;       (not (hasArrows ?s ?a))
-;     )
-;   )  
+  ;; ((((((((((((((    WEST    ))))))))))))))
+  (:action shootWest
+    :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
+    :precondition (and 
+      (at ?s ?l1)
+      (at ?w ?l2)
+      (hasArrows ?s ?a)
+      (adjacent_west ?l1 ?l2)
+    )
+    :effect (and 
+      (not (at ?w ?l2))
+      (empty ?l2)
+      (not (hasArrows ?s ?a))
+    )
+  ) 
 
-;   ;; ((((((((((((((    WEST    ))))))))))))))
-;   (:action shootWest
-;     :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
-;     :precondition (and 
-;       (at ?s ?l1)
-;       (at ?w ?l2)
-;       (hasArrows ?s ?a)
-;       (adjacent_west ?l1 ?l2)
-;     )
-;     :effect (and 
-;       (not (at ?w ?l2))
-;       (empty ?l2)
-;       (not (hasArrows ?s ?a))
-;     )
-;   ) 
+  ;; ((((((((((((((    NORTH    ))))))))))))))
+  (:action shootNorth
+    :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
+    :precondition (and 
+      (at ?s ?l1)
+      (at ?w ?l2)
+      (hasArrows ?s ?a)
+      (adjacent_north ?l1 ?l2)
+    )
+    :effect (and 
+      (not (at ?w ?l2))
+      (empty ?l2)
+      (not (hasArrows ?s ?a))
+    )
+  )  
 
-;   ;; ((((((((((((((    NORTH    ))))))))))))))
-;   (:action shootNorth
-;     :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
-;     :precondition (and 
-;       (at ?s ?l1)
-;       (at ?w ?l2)
-;       (hasArrows ?s ?a)
-;       (adjacent_north ?l1 ?l2)
-;     )
-;     :effect (and 
-;       (not (at ?w ?l2))
-;       (empty ?l2)
-;       (not (hasArrows ?s ?a))
-;     )
-;   )  
+  ;; ((((((((((((((    SOUTH    ))))))))))))))
+  (:action shootSouth
+    :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
+    :precondition (and 
+      (at ?s ?l1)
+      (at ?w ?l2)
+      (hasArrows ?s ?a)
+      (adjacent_south ?l1 ?l2)
+    )
+    :effect (and 
+      (not (at ?w ?l2))
+      (empty ?l2)
+      (not (hasArrows ?s ?a))
+    )
+  )
+    ; TODO: Can you scare in a square that has fireworks? 
+    ; _____________________________Scare________________________________________
+    ;; ((((((((((((((    EAST    ))))))))))))))
+    (:action scareEast
+      :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
+      :precondition (and
+        (at ?s ?l1)
+        (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
+        (adjacent_east ?l1 ?l2)
+        (adjacent_east ?l2 ?l3)
+        (not (at ?w ?l3))
+        (not (exit_points ?l2))
+        (hasFireworks ?s ?f)
+        (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
+        (not (blockedByWall ?l3))
+      )
+      :effect (and 
+        ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
+        (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
+          (at ?w ?l3)
+        )
+        ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
+        (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
+          (not (empty ?l3))
+        )  
+        (not (at ?w ?l2))
+        (empty ?l2)
+        ; if wumpus no longer at l2, then l2 is empty  
+        ; (when (not (at ?w ?l2))
+        ;   (empty ?l2)
+        ; )
+        ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
+        (when (at ?f ?l2)
+          (and
+           (empty ?l2) 
+           (at ?f ?l2)
+          )
+        )
+        ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
+        (when (at ?a ?l2)
+          (and
+           (empty ?l2) 
+           (at ?a ?l2)
+          )
+        )
+        (not (hasFireworks ?s ?f)) 
+      )
+    )
 
-;   ;; ((((((((((((((    SOUTH    ))))))))))))))
-;   (:action shootSouth
-;     :parameters (?s - agent ?a - arrow ?w - wumpus ?l1 - location ?l2 - location)
-;     :precondition (and 
-;       (at ?s ?l1)
-;       (at ?w ?l2)
-;       (hasArrows ?s ?a)
-;       (adjacent_south ?l1 ?l2)
-;     )
-;     :effect (and 
-;       (not (at ?w ?l2))
-;       (empty ?l2)
-;       (not (hasArrows ?s ?a))
-;     )
-;   )
-
-
-; ;     ; ; ___________________________Pick Fireworks______________________________________ (DONE)
-; ;     ; (:action PickFireworks
-; ;     ;   :parameters (?s - agent ?f - fireworks ?l - location)
-; ;     ;   :precondition (and 
-; ;     ;     (at ?s ?l)
-; ;     ;     (at ?f ?l)
-; ;     ;   )
-; ;     ;   :effect (and 
-; ;     ;     (hasFireworks ?s ?f)
-; ;     ;     (not (at ?f ?l))
-; ;     ;   )
-; ;     ; )
-
-
-;     ; _____________________________Scare________________________________________
-;     ;; ((((((((((((((    EAST    ))))))))))))))
-;     (:action scareEast
-;       :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
-;       :precondition (and
-;         (at ?s ?l1)
-;         (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
-;         (adjacent_east ?l1 ?l2)
-;         (adjacent_east ?l2 ?l3)
-;         (not (at ?w ?l3))
-;         (not (exit_points ?l2))
-;         (hasFireworks ?s ?f)
-;         (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
-;         (not (blockedByWall ?l3))
-;       )
-;       :effect (and 
-;         ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
-;         (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
-;           (at ?w ?l3)
-;         )
-;         ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
-;         (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
-;           (not (empty ?l3))
-;         )  
-;         (not (at ?w ?l2))
-;         (empty ?l2)
-;         ; if wumpus no longer at l2, then l2 is empty  
-;         ; (when (not (at ?w ?l2))
-;         ;   (empty ?l2)
-;         ; )
-;         ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
-;         (when (at ?f ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?f ?l2)
-;           )
-;         )
-;         ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
-;         (when (at ?a ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?a ?l2)
-;           )
-;         )
-;         (not (hasFireworks ?s ?f)) 
-;       )
-;     )
-
-;     ;; ((((((((((((((    WEST    ))))))))))))))
-;     (:action scareWest
-;       :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
-;       :precondition (and
-;         (at ?s ?l1)
-;         (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
-;         (adjacent_west ?l1 ?l2)
-;         (adjacent_west ?l2 ?l3)
-;         (not (at ?w ?l3))
-;         (not (exit_points ?l2))
-;         (hasFireworks ?s ?f)
-;         (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
-;         (not (blockedByWall ?l3))
-;       )
-;       :effect (and 
-;         ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
-;         (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
-;           (at ?w ?l3)
-;         )
-;         ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
-;         (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
-;           (not (empty ?l3))
-;         )  
-;         (not (at ?w ?l2))
-;         (empty ?l2)
-;         ; if wumpus no longer at l2, then l2 is empty  
-;         ; (when (not (at ?w ?l2))
-;         ;   (empty ?l2)
-;         ; )
-;         ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
-;         (when (at ?f ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?f ?l2)
-;           )
-;         )
-;         ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
-;         (when (at ?a ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?a ?l2)
-;           )
-;         )
-;         (not (hasFireworks ?s ?f)) 
-;       )
-;     )
+    ;; ((((((((((((((    WEST    ))))))))))))))
+    (:action scareWest
+      :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
+      :precondition (and
+        (at ?s ?l1)
+        (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
+        (adjacent_west ?l1 ?l2)
+        (adjacent_west ?l2 ?l3)
+        (not (at ?w ?l3))
+        (not (exit_points ?l2))
+        (hasFireworks ?s ?f)
+        (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
+        (not (blockedByWall ?l3))
+      )
+      :effect (and 
+        ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
+        (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
+          (at ?w ?l3)
+        )
+        ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
+        (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
+          (not (empty ?l3))
+        )  
+        (not (at ?w ?l2))
+        (empty ?l2)
+        ; if wumpus no longer at l2, then l2 is empty  
+        ; (when (not (at ?w ?l2))
+        ;   (empty ?l2)
+        ; )
+        ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
+        (when (at ?f ?l2)
+          (and
+           (empty ?l2) 
+           (at ?f ?l2)
+          )
+        )
+        ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
+        (when (at ?a ?l2)
+          (and
+           (empty ?l2) 
+           (at ?a ?l2)
+          )
+        )
+        (not (hasFireworks ?s ?f)) 
+      )
+    )
     
-;     ;; ((((((((((((((    NORTH    ))))))))))))))
-;     (:action scareNorth
-;       :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
-;       :precondition (and
-;         (at ?s ?l1)
-;         (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
-;         (adjacent_north ?l1 ?l2)
-;         (adjacent_north ?l2 ?l3)
-;         (not (at ?w ?l3))
-;         (not (exit_points ?l2))
-;         (hasFireworks ?s ?f)
-;         (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
-;         (not (blockedByWall ?l3))
-;       )
-;       :effect (and 
-;         ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
-;         (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
-;           (at ?w ?l3)
-;         )
-;         ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
-;         (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
-;           (not (empty ?l3))
-;         )  
-;         (not (at ?w ?l2))
-;         (empty ?l2)
-;         ; if wumpus no longer at l2, then l2 is empty  
-;         ; (when (not (at ?w ?l2))
-;         ;   (empty ?l2)
-;         ; )
-;         ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
-;         (when (at ?f ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?f ?l2)
-;           )
-;         )
-;         ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
-;         (when (at ?a ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?a ?l2)
-;           )
-;         )
-;         (not (hasFireworks ?s ?f)) 
-;       )
-;     )
+    ;; ((((((((((((((    NORTH    ))))))))))))))
+    (:action scareNorth
+      :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
+      :precondition (and
+        (at ?s ?l1)
+        (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
+        (adjacent_north ?l1 ?l2)
+        (adjacent_north ?l2 ?l3)
+        (not (at ?w ?l3))
+        (not (exit_points ?l2))
+        (hasFireworks ?s ?f)
+        (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
+        (not (blockedByWall ?l3))
+      )
+      :effect (and 
+        ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
+        (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
+          (at ?w ?l3)
+        )
+        ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
+        (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
+          (not (empty ?l3))
+        )  
+        (not (at ?w ?l2))
+        (empty ?l2)
+        ; if wumpus no longer at l2, then l2 is empty  
+        ; (when (not (at ?w ?l2))
+        ;   (empty ?l2)
+        ; )
+        ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
+        (when (at ?f ?l2)
+          (and
+           (empty ?l2) 
+           (at ?f ?l2)
+          )
+        )
+        ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
+        (when (at ?a ?l2)
+          (and
+           (empty ?l2) 
+           (at ?a ?l2)
+          )
+        )
+        (not (hasFireworks ?s ?f)) 
+      )
+    )
     
-;     ;; ((((((((((((((    SOUTH    ))))))))))))))
-;     (:action scareSouth
-;       :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
-;       :precondition (and
-;         (at ?s ?l1)
-;         (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
-;         (adjacent_south ?l1 ?l2)
-;         (adjacent_south ?l2 ?l3)
-;         (not (at ?w ?l3))
-;         (not (exit_points ?l2))
-;         (hasFireworks ?s ?f)
-;         (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
-;         (not (blockedByWall ?l3))
-;       )
-;       :effect (and 
-;         ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
-;         (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
-;           (at ?w ?l3)
-;         )
-;         ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
-;         (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
-;           (not (empty ?l3))
-;         )  
-;         (not (at ?w ?l2))
-;         (empty ?l2)
-;         ; if wumpus no longer at l2, then l2 is empty  
-;         ; (when (not (at ?w ?l2))
-;         ;   (empty ?l2)
-;         ; )
-;         ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
-;         (when (at ?f ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?f ?l2)
-;           )
-;         )
-;         ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
-;         (when (at ?a ?l2)
-;           (and
-;            (empty ?l2) 
-;            (at ?a ?l2)
-;           )
-;         )
-;         (not (hasFireworks ?s ?f)) 
-;       )
-;     )
+    ;; ((((((((((((((    SOUTH    ))))))))))))))
+    (:action scareSouth
+      :parameters (?s - agent ?a - arrow ?f - fireworks ?w - wumpus ?l1 - location ?l2 - location ?l3 - location)
+      :precondition (and
+        (at ?s ?l1)
+        (or (at ?w ?l2) (and (at ?w ?l2) (at ?f ?l2)) (and (at ?w ?l2) (at ?a ?l2)))
+        (adjacent_south ?l1 ?l2)
+        (adjacent_south ?l2 ?l3)
+        (not (at ?w ?l3))
+        (not (exit_points ?l2))
+        (hasFireworks ?s ?f)
+        (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3)))) 
+        (not (blockedByWall ?l3))
+      )
+      :effect (and 
+        ; when l3 either is empty or has fireworks or arrows and no wumpus in both cases, the wumpus can move. 
+        (when (or (empty ?l3) (and (at ?f ?l3) (not (at ?w ?l3))) (and (at ?a ?l3) (not (at ?w ?l3))))
+          (at ?w ?l3)
+        )
+        ; when the wumpus is at l3 alone or es gibt fireworks oder arrow damit then l3 is not empty 
+        (when (or (at ?w ?l3) (and (at ?w ?l3) (at ?f ?l3)) (and (at ?w ?l3) (at ?a ?l3)))
+          (not (empty ?l3))
+        )  
+        (not (at ?w ?l2))
+        (empty ?l2)
+        ; if wumpus no longer at l2, then l2 is empty  
+        ; (when (not (at ?w ?l2))
+        ;   (empty ?l2)
+        ; )
+        ; if wumpus no longer at l2 and there is firewworks at l2, then l2 is empty and has fireworks 
+        (when (at ?f ?l2)
+          (and
+           (empty ?l2) 
+           (at ?f ?l2)
+          )
+        )
+        ; if wumpus no longer at l2 and there is arrow at l2, then l2 is empty and has arrow 
+        (when (at ?a ?l2)
+          (and
+           (empty ?l2) 
+           (at ?a ?l2)
+          )
+        )
+        (not (hasFireworks ?s ?f)) 
+      )
+    )
 
   ; _____________________________PushHalfCrate_________________________________________
   ;; ((((((((((((((    EAST    ))))))))))))))
