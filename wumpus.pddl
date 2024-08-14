@@ -42,6 +42,7 @@
       (or (empty ?l2) (at ?a ?l2) (at ?f ?l2))
       (adjacent_east ?l1 ?l2)
       (not (at ?w ?l2))
+      ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
       (at ?s ?l2)
@@ -52,10 +53,10 @@
         (hasArrows ?s ?a)
       )
       (not (at ?a ?l2))
-      (when (at ?f ?l2)
-          (hasFireworks ?s ?f)
-      )
-      (not (at ?f ?l2))
+      ; (when (at ?f ?l2)
+      ;     (hasFireworks ?s ?f)
+      ; )
+      ; (not (at ?f ?l2))
     )
   )  
   
@@ -67,6 +68,7 @@
       (or (empty ?l2) (at ?a ?l2) (at ?f ?l2))
       (adjacent_west ?l1 ?l2)
       (not (at ?w ?l2))
+      ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
       (at ?s ?l2)
@@ -77,10 +79,10 @@
         (hasArrows ?s ?a)
       )
       (not (at ?a ?l2))
-      (when (at ?f ?l2)
-          (hasFireworks ?s ?f)
-      )
-      (not (at ?f ?l2))
+      ; (when (at ?f ?l2)
+      ;     (hasFireworks ?s ?f)
+      ; )
+      ; (not (at ?f ?l2))
     )
   )  
 
@@ -92,6 +94,7 @@
       (or (empty ?l2) (at ?a ?l2) (at ?f ?l2))
       (adjacent_north ?l1 ?l2)
       (not (at ?w ?l2))
+      ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
       (at ?s ?l2)
@@ -102,10 +105,10 @@
         (hasArrows ?s ?a)
       )
       (not (at ?a ?l2))
-      (when (at ?f ?l2)
-          (hasFireworks ?s ?f)
-      )
-      (not (at ?f ?l2))
+      ; (when (at ?f ?l2)
+      ;     (hasFireworks ?s ?f)
+      ; )
+      ; (not (at ?f ?l2))
     )
   )  
 
@@ -117,6 +120,7 @@
       (or (empty ?l2) (at ?a ?l2) (at ?f ?l2))
       (adjacent_south ?l1 ?l2)
       (not (at ?w ?l2))
+      ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
       (at ?s ?l2)
@@ -127,12 +131,25 @@
         (hasArrows ?s ?a)
       )
       (not (at ?a ?l2))
-      (when (at ?f ?l2)
-          (hasFireworks ?s ?f)
-      )
-      (not (at ?f ?l2))
+      ; (when (at ?f ?l2)
+      ;     (hasFireworks ?s ?f)
+      ; )
+      ; (not (at ?f ?l2))
     )
   )  
+
+    ; _________________________Pick Up FireWorks_____________________________________     
+    (:action pickUpFireworks
+        :parameters (?s - agent ?l - location ?f - fireworks)
+        :precondition (and 
+          (at ?s ?l) 
+          (at ?f ?l)
+        )
+        :effect (and
+          (hasFireworks ?s ?f) 
+          (not (at ?f ?l)) 
+         )
+    )
 
     ;; Handles both pushing one crate and one half crate 
     ; _____________________________PushCrate_________________________________________
@@ -528,7 +545,6 @@
       (not (hasArrows ?s ?a))
     )
   )
-    ; TODO: Can you scare in a square that has fireworks? 
     ; _____________________________Scare________________________________________
     ;; ((((((((((((((    EAST    ))))))))))))))
     (:action scareEast
@@ -733,11 +749,12 @@
           (adjacent_east ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (empty ?l4) (at ?p ?l4))
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
+          
       )
        :effect (and
           ;; Empty Square
-          (when (empty ?l4) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -798,11 +815,11 @@
           (adjacent_west ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (empty ?l4) (at ?p ?l4))
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (empty ?l4) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -863,11 +880,11 @@
           (adjacent_north ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (empty ?l4) (at ?p ?l4))
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (empty ?l4) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -928,11 +945,11 @@
           (adjacent_south ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (empty ?l4) (at ?p ?l4))
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (empty ?l4) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))

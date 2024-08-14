@@ -42,7 +42,7 @@ def copy_and_insert_map_content(example_map, original_map, example_pddl):
     pddl_files = []
 
     # Iterate over each example problem file
-    for example_problem_file in os.listdir(example_map)[60:70]:
+    for example_problem_file in os.listdir(example_map)[71:72]:
         if example_problem_file.endswith('.txt'):
             # Extract the example problem number from the file name
             problem_number = example_problem_file.split('.')[0]
@@ -157,6 +157,9 @@ def generate_solution_text_files(planner_output, solution_txt_directory, action_
                         action = action.strip('();')
                         # Map the action using action_map if available, else use the original action
                         mapped_action = action_map.get(action, action)
+                        # Skip writing 'pickupfireworks' to the file
+                        if mapped_action == 'pickupfireworks':
+                            continue
                         # Write the mapped action to the file
                         f.write(f"{mapped_action}\n")
             print(f"Solution text file generated successfully for {problem_number}.pddl.soln")
