@@ -737,7 +737,7 @@
   ; _____________________________PushHalfCrate_________________________________________
   ;; ((((((((((((((    EAST    ))))))))))))))
   (:action pushHalfCrateEast
-      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
+      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?a - arrow ?f - fireworks ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
       :precondition (and 
           (at ?s ?l1)
           (at ?h1 ?l2)
@@ -803,7 +803,7 @@
 
   ;; ((((((((((((((    WEST    ))))))))))))))
     (:action pushHalfCrateWest
-      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
+      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?a - arrow ?f - fireworks ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
       :precondition (and 
           (at ?s ?l1)
           (at ?h1 ?l2)
@@ -868,7 +868,7 @@
 
   ;; ((((((((((((((    NORTH    ))))))))))))))
     (:action pushHalfCrateNorth
-      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
+      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?a - arrow ?f - fireworks ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
       :precondition (and 
           (at ?s ?l1)
           (at ?h1 ?l2)
@@ -933,7 +933,7 @@
 
   ;; ((((((((((((((    SOUTH    ))))))))))))))
     (:action pushHalfCrateSouth
-      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
+      :parameters (?s - agent ?h1 - halfcrate ?h2 - halfcrate ?a - arrow ?f - fireworks ?l1 - location ?l2 - location ?l3 - location ?l4 - location ?p - pit)
       :precondition (and 
           (at ?s ?l1)
           (at ?h1 ?l2)
