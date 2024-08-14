@@ -163,12 +163,12 @@
             (adjacent_east ?l1 ?l2)
             (adjacent_east ?l2 ?l3)
             ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-            (or (empty ?l3) (at ?p ?l3))
+            (or (or (empty ?l3) (at ?a ?l3) (at ?f ?l3)) (at ?p ?l3))
             (not (exit_points ?l2))
         )
         :effect (and
             ;; SITUATION_1: Empty Square
-            (when (empty ?l3) 
+            (when (or (empty ?l3) (at ?a ?l3) (at ?f ?l3))
                 (and 
                     (at ?s ?l2) 
                     (not (at ?s ?l1)) 
@@ -245,12 +245,12 @@
             (adjacent_west ?l1 ?l2)
             (adjacent_west ?l2 ?l3)
             ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-            (or (empty ?l3) (at ?p ?l3))
+            (or (or (empty ?l3) (at ?a ?l3) (at ?f ?l3)) (at ?p ?l3))
             (not (exit_points ?l2))
         )
         :effect (and
             ;; SITUATION_1: Empty Square
-            (when (empty ?l3) 
+            (when (or (empty ?l3) (at ?a ?l3) (at ?f ?l3))
                 (and 
                     (at ?s ?l2) 
                     (not (at ?s ?l1)) 
@@ -327,12 +327,12 @@
             (adjacent_north ?l1 ?l2)
             (adjacent_north ?l2 ?l3)
             ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-            (or (empty ?l3) (at ?p ?l3))
+            (or (or (empty ?l3) (at ?a ?l3) (at ?f ?l3)) (at ?p ?l3))
             (not (exit_points ?l2))
         )
         :effect (and
             ;; SITUATION_1: Empty Square
-            (when (empty ?l3) 
+            (when (or (empty ?l3) (at ?a ?l3) (at ?f ?l3))
                 (and 
                     (at ?s ?l2) 
                     (not (at ?s ?l1)) 
@@ -409,12 +409,12 @@
             (adjacent_south ?l1 ?l2)
             (adjacent_south ?l2 ?l3)
             ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-            (or (empty ?l3) (at ?p ?l3))
+            (or (or (empty ?l3) (at ?a ?l3) (at ?f ?l3)) (at ?p ?l3))
             (not (exit_points ?l2))
         )
         :effect (and
             ;; SITUATION_1: Empty Square
-            (when (empty ?l3) 
+            (when (or (empty ?l3) (at ?a ?l3) (at ?f ?l3))
                 (and 
                     (at ?s ?l2) 
                     (not (at ?s ?l1)) 
