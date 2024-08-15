@@ -39,13 +39,13 @@
     :parameters (?s - agent ?l1 - location ?l2 - location ?h - halfcrate ?c - crate ?a - arrow ?f - fireworks ?w - wumpus)
     :precondition (and 
       (at ?s ?l1) 
-      (adjacent_east ?l1 ?l2)
-      ;; Ensure the location is empty, contains only arrows, or contains only fireworks but NOT a pushable object or wumpus
       (or 
         (empty ?l2)
-        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
-        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
+        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
+        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
       )
+      (adjacent_east ?l1 ?l2)
+      (not (at ?w ?l2))
       ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
@@ -69,13 +69,13 @@
     :parameters (?s - agent ?l1 - location ?l2 - location ?h - halfcrate ?c - crate ?a - arrow ?f - fireworks ?w - wumpus)
     :precondition (and 
       (at ?s ?l1) 
-      (adjacent_west ?l1 ?l2)
-      ;; Ensure the location is empty, contains only arrows, or contains only fireworks but NOT a pushable object or wumpus
       (or 
         (empty ?l2)
-        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
-        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
+        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
+        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
       )
+      (adjacent_west ?l1 ?l2)
+      (not (at ?w ?l2))
       ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
@@ -99,13 +99,13 @@
     :parameters (?s - agent ?l1 - location ?l2 - location ?h - halfcrate ?c - crate ?a - arrow ?f - fireworks ?w - wumpus)
     :precondition (and 
       (at ?s ?l1) 
-      (adjacent_north ?l1 ?l2)
-      ;; Ensure the location is empty, contains only arrows, or contains only fireworks but NOT a pushable object or wumpus
       (or 
         (empty ?l2)
-        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
-        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
+        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
+        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
       )
+      (adjacent_north ?l1 ?l2)
+      (not (at ?w ?l2))
       ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
@@ -129,13 +129,13 @@
     :parameters (?s - agent ?l1 - location ?l2 - location ?h - halfcrate ?c - crate ?a - arrow ?f - fireworks ?w - wumpus)
     :precondition (and 
       (at ?s ?l1) 
-      (adjacent_south ?l1 ?l2)
-      ;; Ensure the location is empty, contains only arrows, or contains only fireworks but NOT a pushable object or wumpus
       (or 
         (empty ?l2)
-        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
-        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)) (not (at ?w ?l2)))
+        (and (at ?a ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
+        (and (at ?f ?l2) (not (at ?h ?l2)) (not (at ?c ?l2)))
       )
+      (adjacent_south ?l1 ?l2)
+      (not (at ?w ?l2))
       ; (or (hasFireworks ?s ?f) (not (hasFireworks ?s ?f)))
     )
     :effect (and 
@@ -183,7 +183,7 @@
             (or 
                 (empty ?l3) 
                 (at ?p ?l3)
-                (and (or (at ?a ?l3) (at ?f ?l3)))
+                (and (or (at ?a ?l3) (at ?f ?l3)) (not (at ?o1 ?l3)))
             )
             (not (blockedByWall ?l3))
             (not (exit_points ?l2))
@@ -271,7 +271,7 @@
             (or 
                 (empty ?l3) 
                 (at ?p ?l3)
-                (and (or (at ?a ?l3) (at ?f ?l3)))
+                (and (or (at ?a ?l3) (at ?f ?l3)) (not (at ?o1 ?l3)))
             )
             (not (blockedByWall ?l3))
             (not (exit_points ?l2))
@@ -359,7 +359,7 @@
             (or 
                 (empty ?l3) 
                 (at ?p ?l3)
-                (and (or (at ?a ?l3) (at ?f ?l3)))
+                (and (or (at ?a ?l3) (at ?f ?l3)) (not (at ?o1 ?l3)))
             )
             (not (blockedByWall ?l3))
             (not (exit_points ?l2))
@@ -447,7 +447,7 @@
             (or 
                 (empty ?l3) 
                 (at ?p ?l3)
-                (and (or (at ?a ?l3) (at ?f ?l3)))
+                (and (or (at ?a ?l3) (at ?f ?l3)) (not (at ?o1 ?l3)))
             )
             (not (blockedByWall ?l3))
             (not (exit_points ?l2))
@@ -789,12 +789,12 @@
           (adjacent_east ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (and(or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) (at ?p ?l4))
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
           
       )
        :effect (and
           ;; Empty Square
-          (when (and (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -855,12 +855,11 @@
           (adjacent_west ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (and(or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) (at ?p ?l4))
-          
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (and (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -921,12 +920,11 @@
           (adjacent_north ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (and(or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) (at ?p ?l4))
-          
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (and (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
@@ -987,12 +985,11 @@
           (adjacent_south ?l3 ?l4)
           (not (exit_points ?l3))
           ;; Check if location ?l3 is either empty or contains a pit and is not blocked by a wall
-          (or (and(or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) (at ?p ?l4))
-          
+          (or (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (at ?p ?l4))
       )
        :effect (and
           ;; Empty Square
-          (when (and (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) (not (at ?h2 ?l4))) 
+          (when (or (empty ?l4) (at ?a ?l4) (at ?f ?l4)) 
               (and 
                 (at ?s ?l2)
                 (not (at ?s ?l1))
