@@ -42,7 +42,7 @@ def copy_and_insert_map_content(example_map, original_map, example_pddl):
     pddl_files = []
 
     # Iterate over each example problem file
-    for example_problem_file in os.listdir(example_map)[71:72]:
+    for example_problem_file in os.listdir(example_map)[0:10]:
         if example_problem_file.endswith('.txt'):
             # Extract the example problem number from the file name
             problem_number = example_problem_file.split('.')[0]
@@ -95,14 +95,23 @@ def copy_and_insert_map_content(example_map, original_map, example_pddl):
     return pddl_files
 
 # Function to execute the planner for each PDDL file
+
 def execute_planner(example_pddl, planner_output, pddl_files):
+    # Path to the directory containing wumpus.pddl
+    wumpus_pddl_directory = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2'
+
     # Iterate over each generated PDDL file and solve it
     for pddl_file in pddl_files:
         # Extract the problem number from the file name
         problem_number = os.path.basename(pddl_file).split('.')[0]
 
         # Docker command to run fast-downward planner for the current PDDL file
-        docker_command = f'docker run --rm -v "{example_pddl}:/files" aibasel/downward --alias lama-first --plan-file /files/{problem_number}.soln /files/wumpus.pddl /files/{problem_number}.pddl'
+        docker_command = (
+            f'docker run --rm -v "{example_pddl}:/files" '
+            f'-v "{wumpus_pddl_directory}:/wumpus" '
+            f'aibasel/downward --alias lama-first --plan-file /files/{problem_number}.soln '
+            f'/wumpus/wumpus.pddl /files/{problem_number}.pddl'
+        )
 
         # Execute the Docker command
         subprocess.run(docker_command, shell=True)
@@ -115,9 +124,10 @@ def execute_planner(example_pddl, planner_output, pddl_files):
             shutil.move(output_file, os.path.join(planner_output, f'{problem_number}.pddl.soln'))
             print(f"Planner output stored successfully in {os.path.join(planner_output, f'{problem_number}.pddl.soln')}")
         else:
-            print(f" \t \t \t No solution found for {problem_number}.pddl")
+            print(f"No solution found for {problem_number}.pddl")
 
     print("All planner successful outputs stored successfully in:", planner_output)
+
 
 # Function to map actions from the solution file
 def map_actions(solution_file):
@@ -168,7 +178,8 @@ def generate_solution_text_files(planner_output, solution_txt_directory, action_
 # Main function to orchestrate the workflow
 def main():
     # Directories
-    example_maps = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2\example-maps'
+    # example_maps = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2\example-maps'
+    example_maps = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2\maps'
     original_map = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2'
     example_pddl = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2\example-pddl'
     planner_output = r'E:\Collage\Semester-4\AI-SysProject\Problem_5\project\assignment2\planner-output'
@@ -192,10 +203,10 @@ def main():
         "scareeast": "scare east",
         "scarenorth": "scare north",
         "scaresouth": "scare south",
-        "pushhalfcratewest": "push H west",
-        "pushhalfcratenorth": "push H north",
-        "pushhalfcratesouth": "push H south",
-        "pushhalfcrateeast": "push H east",
+        "pushhalfcratenorth": "push north",
+        "pushhalfcratesouth": "push south",
+        "pushhalfcratewest": "push west",
+        "pushhalfcrateeast": "push east"
     }
 
     # Copy map content into PDDL files
