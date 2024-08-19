@@ -216,6 +216,7 @@
                     (and
                       (not (at ?c ?l2))
                       (empty ?l3)
+                      (not (at ?p ?l3))
                     )
                   )
 
@@ -304,6 +305,7 @@
                     (and
                       (not (at ?c ?l2))
                       (empty ?l3)
+                      (not (at ?p ?l3))
                     )
                   )
 
@@ -392,6 +394,7 @@
                     (and
                       (not (at ?c ?l2))
                       (empty ?l3)
+                      (not (at ?p ?l3))
                     )
                   )
 
@@ -480,6 +483,7 @@
                     (and
                       (not (at ?c ?l2))
                       (empty ?l3)
+                      (not (at ?p ?l3))
                     )
                   )
 
