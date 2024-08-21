@@ -167,14 +167,16 @@ This section defines the elements present in the problem domain, such as the age
 
 2) **:init**
 
-this section in the PDDL (Planning Domain Definition Language) file serves to specify the initial state of the problem domain.
+This section serves to specify the initial state of the problem domain.
 mainly by defining three main relations: 
 
 - **Map content:** For each mapXYZ its initial states are scanned by the escape.py script and embedded in this section.
 - **Exit cells:** Stating the exit locations in the map.
 - **Adjacencies:** Stating the adjacencies between each cell and all the surrounding adjacent cells to it from the four cardinal direction (north, south, east, or west)
 
-generating a mapXYZ.pddl file containing all the required i 
+This results in generating a mapXYZ.pddl file containing all the required information for every single map.
 
+3) **:goal**
 
-It delineates the starting conditions and configurations relevant to the planning problem being defined. This section typically includes predicates representing the initial state of objects, their properties, and relationships within the environment. By accurately defining the initial state for each mapXYZ.txt, planners can effectively generate plans that transition the system from this initial state towards achieving the specified goals. For each problem instance represented by a mapXYZ.txt file, a corresponding PDDL file named mapXYZ.pddl is generated.
+The final goal is for the agent to reach one of the squares marked as Exit cells.
+
