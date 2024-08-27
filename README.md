@@ -112,13 +112,12 @@ This action allows the agent to move from one location to an adjacent location i
 ```
 This action allows the agent to push an object to an adjacent location in any cardinal direction. The outcomes vary based on the type of destination: 
 - **Empty Square:** the agent can push the object to the new location, leaving the previous location empty.
-![Screenshot 2024-08-27 191554](https://github.com/user-attachments/assets/4faece0a-1b7e-4610-ac33-7b5d32abc8a5)
-
+<img src="image-5.png" alt="alt text" width="500" height="200">
 
 - **Empty Pit:** the object may either disappear (if it's a crate) creating an empty square out of the pit or partially fill the pit (if it's a half-crate), with the agent moving into the original object's position.
 <img src="image-6.png" alt="alt text" width="500" height="200">
 
-- **Half-Pit:** pushing a crate will block the location, or if it's a half-crate, the half-pit becomes an empty square, and the agent moves as before.
+- **Half-Pit:** pushing a crate will block the location, or if it's a half-crate, the half-pit becomes an empty square, and the agent moves as before.<br />
 <img src="image-7.png" alt="alt text" width="500" height="200">
 
 ▣ **shoot**
@@ -149,10 +148,10 @@ This code defines an action where an agent can push a half-crate in any cardinal
 <img src="image-8.png" alt="alt text" width="500" height="200">
 
 
-- **Empty Pit:** The agent and the first half-crate move similarly, but the second half-crate falls into the pit, transforming it into a "half-pit."
+- **Empty Pit:** The agent and the first half-crate move similarly, but the second half-crate falls into the pit, transforming it into a "half-pit."<br />
 <img src="image-9.png" alt="alt text" width="500" height="200">
 
-- **Half-Pit:** The agent and the first half-crate move as before, but the second half-crate fully covers the half-pit, leaving the final location empty.
+- **Half-Pit:** The agent and the first half-crate move as before, but the second half-crate fully covers the half-pit, leaving the final location empty.<br />
 <img src="image-10.png" alt="alt text" width="500" height="200">
 
 ```python
@@ -212,9 +211,9 @@ The final goal is for the agent to reach one of the squares marked as Exit cells
 
 - For the "Push Crate" and "Push Half-Crate" actions, we needed to create two separate actions to address the following scenarios:
 
-  - Pushing a single object, whether it's a "Crate" or a "Half-Crate," to a new position. This was managed by the `push(East/West/North/South)` actions.
+  - Pushing a single object, whether it's a "Crate" or a "Half-Crate," to a new position. This was managed by the `push(East/West/North/South)` actions.<br />
   <img src="image-3.png" alt="alt text" width="500" height="200">
-  - Pushing two "Half-Crates" together to a new position, which was handled by the `pushHalfCrate(East/West/North/South)` actions.
+  - Pushing two "Half-Crates" together to a new position, which was handled by the `pushHalfCrate(East/West/North/South)` actions.<br />
   <img src="image-4.png" alt="alt text" width="500" height="200">
 
 - We encountered an issue where the agent was pushing objects or scaring the Wumpus outside the map boundaries, despite having defined all map cells and every location from "cell0_0" to "cell7_11". To resolve this, we added an additional condition to ensure that the current location of either the object to be moved or the Wumpus to be scared is not already defined as an "exit_point." This extra check helped prevent the agent from inadvertently moving elements outside the intended map boundaries.
@@ -227,10 +226,9 @@ As for the output each required type of files are generated in diffrent folder:
 - **file-pddl-sol:** ontains the planner solutions for each corresponding "mapXYZ.pddl" instance.
 - **file-txt:** contains mapping of the planner output to the requested output format.
 
-When passing both the `wumpus.pddl` and `map.pddl` to the server and running the script on the example problems and verifying the solution by using 
-
+When passing both the `wumpus.pddl` and `map.pddl` to the server and running the script on the example problems and verifying the solution by using <br />
 ![alt text](image-2.png)
 
-we get: 
+we get: <br />
 
 ![alt text](image.png)
