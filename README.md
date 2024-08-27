@@ -196,5 +196,19 @@ The final goal is for the agent to reach one of the squares marked as Exit cells
   - Pushing two "Half-Crates" together to a new position, which was handled by the `pushHalfCrate(East/West/North/South)` actions.
 
 - We encountered an issue where the agent was pushing objects or scaring the Wumpus outside the map boundaries, despite having defined all map cells and every location from "cell0_0" to "cell7_11". To resolve this, we added an additional condition to ensure that the current location of either the object to be moved or the Wumpus to be scared is not already defined as an "exit_point." This extra check helped prevent the agent from inadvertently moving elements outside the intended map boundaries.
- 
 
+ 
+## Output Format 
+
+As for the output each required type of files are generated in diffrent folder: 
+- **file-pdd:** contains the "mapXYZ.pddl" files.
+- **file-pddl-sol:** ontains the planner solutions for each corresponding "mapXYZ.pddl" instance.
+- **file-txt:** contains mapping of the planner output to the requested output format.
+
+When passing both the `wumpus.pddl` and `map.pddl` to the server and running the script on the example problems and verifying the solution by using 
+
+![alt text](image-2.png)
+
+we get: 
+
+![alt text](image.png)
