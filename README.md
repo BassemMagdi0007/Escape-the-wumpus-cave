@@ -112,7 +112,8 @@ This action allows the agent to move from one location to an adjacent location i
 ```
 This action allows the agent to push an object to an adjacent location in any cardinal direction. The outcomes vary based on the type of destination: 
 - **Empty Square:** the agent can push the object to the new location, leaving the previous location empty.
-<img src="image-5.png" alt="alt text" width="500" height="200">
+![Screenshot 2024-08-27 191554](https://github.com/user-attachments/assets/4faece0a-1b7e-4610-ac33-7b5d32abc8a5)
+
 
 - **Empty Pit:** the object may either disappear (if it's a crate) creating an empty square out of the pit or partially fill the pit (if it's a half-crate), with the agent moving into the original object's position.
 <img src="image-6.png" alt="alt text" width="500" height="200">
