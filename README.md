@@ -180,3 +180,21 @@ This results in generating a mapXYZ.pddl file containing all the required inform
 
 The final goal is for the agent to reach one of the squares marked as Exit cells.
 
+## Self Evaluation and Design Decisions
+
+### _wumpus.pddl file_
+
+- We encountered issues with the latest version of PDDL extension (v2.28.1), where the `wumpus.pddl` file was not processed correctly. However, after reverting to an earlier version (v1.0.0), the file was read and executed without any problems.
+
+- Initially, we implemented nested "when" conditions in our PDDL model. However, we discovered that nested conditional effects are not permitted according to the BNF definition of PDDL 3.1. As a result, we adjusted our approach to handle action conditions using a single "when" condition instead of nesting them.
+
+- Regarding the actions, our initial goal was to enable the agent to pick up either Arrow objects (?a) or Firework objects (?f) within the "walk" action. However, while this approach worked for the Arrow objects, we encountered issues with the Firework objects. To address this, we created a separate action called `pickUpFireworks` specifically for collecting Firework objects, this adjustment allowed us to effectively resolve the issue of being unable to correctly collect and use Firework objects.
+
+- For the "Push Crate" and "Push Half-Crate" actions, we needed to create two separate actions to address the following scenarios:
+
+  - Pushing a single object, whether it's a "Crate" or a "Half-Crate," to a new position. This was managed by the `push(East/West/North/South)` actions.
+  - Pushing two "Half-Crates" together to a new position, which was handled by the `pushHalfCrate(East/West/North/South)` actions.
+
+- We encountered an issue where the agent was pushing objects or scaring the Wumpus outside the map boundaries, despite having defined all map cells and every location from "cell0_0" to "cell7_11". To resolve this, we added an additional condition to ensure that the current location of either the object to be moved or the Wumpus to be scared is not already defined as an "exit_point." This extra check helped prevent the agent from inadvertently moving elements outside the intended map boundaries.
+ 
+
