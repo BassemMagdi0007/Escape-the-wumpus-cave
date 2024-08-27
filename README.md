@@ -57,7 +57,7 @@ Description: module enables you to spawn new processes, connect to their input/o
 ◆ **_wumpus.pddl_**
 -
 
-1) :TYPES
+**1) :TYPES**
 ```python
 (:types
     location
@@ -68,7 +68,7 @@ Description: module enables you to spawn new processes, connect to their input/o
 ```
 Defines the types of objects that exist in the domain.
 
-2) :PREDICATES
+**2) :PREDICATES**
 
 ```python
   (:predicates
@@ -94,7 +94,8 @@ Defines the types of objects that exist in the domain.
 ```
 Define the properties or relationships between objects in the domain. They represent the state of the world and the conditions under which actions can be performed. In this domain.
 
-3) :ACTIONS
+**3) :ACTIONS** <br />
+▣ **walk**
 
 ```python
   (:action walk ;;East/West/North/South
@@ -102,6 +103,8 @@ Define the properties or relationships between objects in the domain. They repre
   )
 ```
 This action allows the agent to move from one location to an adjacent location in any cardinal direction (north, south, east, or west) under specific conditions. The move is allowed if the destination is either empty or contains certain objects (like an arrow or fireworks) but not others (like a crate or half-crate), and there are no dangerous entities present. After the move, the agent's location is updated, the previous location is marked as empty, and if there was an arrow in the new location, the agent acquires it and it is removed from the location.
+
+▣ **pushCrate**
 ```python
   (:action pushCrate ;;East/West/North/South
     ...
@@ -109,20 +112,31 @@ This action allows the agent to move from one location to an adjacent location i
 ```
 This action allows the agent to push an object to an adjacent location in any cardinal direction. The outcomes vary based on the type of destination: 
 - **Empty Square:** the agent can push the object to the new location, leaving the previous location empty.
+<img src="image-5.png" alt="alt text" width="500" height="200">
+
 - **Empty Pit:** the object may either disappear (if it's a crate) creating an empty square out of the pit or partially fill the pit (if it's a half-crate), with the agent moving into the original object's position.
+<img src="image-6.png" alt="alt text" width="500" height="200">
+
 - **Half-Pit:** pushing a crate will block the location, or if it's a half-crate, the half-pit becomes an empty square, and the agent moves as before.
+<img src="image-7.png" alt="alt text" width="500" height="200">
+
+▣ **shoot**
 ```python
   (:action shoot ;;East/West/North/South
     ...
   )
 ```
 This action allows the agent to shoot an arrow in any cardinal direction towards a location where a Wumpus is present. The action can occur if the agent has an arrow and is adjacent to the Wumpus in the specified direction. When the action is performed, the Wumpus is eliminated from the target location, making that location an empty square for the agent to move in, and the agent loses the arrow used for the shot. 
+
+▣ **scare**
 ```python
   (:action scare ;;East/West/North/South
     ...
   )
 ```
 This action allows the agent to scare a Wumpus in any cardinal direction using fireworks. The action can occur if the Wumpus is in an adjacent location and the agent has fireworks. The Wumpus will move from its current location to the next adjacent location in the same direction, provided that the new location is either empty or contains fireworks or an arrow. If the Wumpus successfully moves, the previous location becomes empty. If fireworks or an arrow were present at the initial location, they remain there after the Wumpus moves. The agent loses the fireworks used in the action.
+
+▣ **pushHalfCrate**
 ```python
   (:action pushHalfCrate ;;East/West/North/South
     ...
@@ -130,11 +144,16 @@ This action allows the agent to scare a Wumpus in any cardinal direction using f
 ```
 This code defines an action where an agent can push a half-crate in any cardinal direction. The action requires that the agent, the first half-crate, and the second half-crate are in consecutive adjacent locations, and the final destination is either empty, contains an arrow or fireworks, or is a pit. The outcomes depend on the destination type:
 
-- **Empty Square:** The agent moves to the location of the first half-crate, pushing the first half-crate to the location of the second half-crate, and the second half-crate to the final location, which is now occupied by that half-crate.
+- **Empty Square:** The agent moves to the location of the first half-crate, pushing the first half-crate to the location of the second half-crate, and the second half-crate to the final location, which is now occupied by that half-crate.<br />
+<img src="image-8.png" alt="alt text" width="500" height="200">
+
 
 - **Empty Pit:** The agent and the first half-crate move similarly, but the second half-crate falls into the pit, transforming it into a "half-pit."
+<img src="image-9.png" alt="alt text" width="500" height="200">
 
 - **Half-Pit:** The agent and the first half-crate move as before, but the second half-crate fully covers the half-pit, leaving the final location empty.
+<img src="image-10.png" alt="alt text" width="500" height="200">
+
 ```python
   (:action exit_map
     ...
@@ -193,7 +212,9 @@ The final goal is for the agent to reach one of the squares marked as Exit cells
 - For the "Push Crate" and "Push Half-Crate" actions, we needed to create two separate actions to address the following scenarios:
 
   - Pushing a single object, whether it's a "Crate" or a "Half-Crate," to a new position. This was managed by the `push(East/West/North/South)` actions.
+  <img src="image-3.png" alt="alt text" width="500" height="200">
   - Pushing two "Half-Crates" together to a new position, which was handled by the `pushHalfCrate(East/West/North/South)` actions.
+  <img src="image-4.png" alt="alt text" width="500" height="200">
 
 - We encountered an issue where the agent was pushing objects or scaring the Wumpus outside the map boundaries, despite having defined all map cells and every location from "cell0_0" to "cell7_11". To resolve this, we added an additional condition to ensure that the current location of either the object to be moved or the Wumpus to be scared is not already defined as an "exit_point." This extra check helped prevent the agent from inadvertently moving elements outside the intended map boundaries.
 
