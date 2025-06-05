@@ -1,4 +1,4 @@
-# Assignment 1.5: Escape the wumpus cave 
+# Escape the wumpus cave 
 
 This repository contains a solution to the Escape the Wumpus Cave assignment, focusing on planning using the Planning Domain Definition Language (PDDL). The task involves devising a strategy for an agent to escape from a Wumpus-infested cave using PDDL planners. The agent must navigate through various obstacles such as walls, crates, pits, and the formidable Wumpus itself to find its way out of the cave.
 
